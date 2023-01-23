@@ -45,6 +45,23 @@ const HeaderMenuList = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    transition: .3s ease;
+
+    &.open {
+        left: 0;
+    }
+
+    @media only screen and (max-width: 768px) {
+        position: fixed;
+        flex-direction: column;
+        padding: 50px 0 0;
+        width: 60%;
+        height: 100%;
+        background: var(--color-white);
+        top: 0;
+        left: -120%;
+        z-index: 100;
+    }
 `;
 
 const HeaderMenuItem = styled.div`
@@ -71,6 +88,49 @@ const HeaderMenuItem = styled.div`
         width: 100%;
         right: auto;
         left: 0;
+    }
+
+    @media only screen and (max-width: 768px) {
+        margin: 5px 0;
+        height: auto;
+
+        &::before {
+            content: none;
+        }
+    }
+`;
+
+const BurgerBtn = styled.div`
+    position: relative;
+    display: none;
+    width: 24px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    text-align: right;
+    gap: 6px;
+    padding: 5px 0;
+    cursor: pointer;
+    z-index: 99;
+
+    i {
+        position: relative;
+        height: 2px;
+        width: 100%;
+        right: 0;
+        background: var(--color-black);
+        transition: .3s ease;
+        
+        &:nth-of-type(1) {
+            width: 50%;
+        }
+        &:nth-of-type(3) {
+            width: 70%;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        display: flex;
     }
 `;
 
@@ -108,6 +168,11 @@ const menuList: any[] = [
 ];
 
 class Header extends React.Component {
+    handleBurgerClick = (): void => {
+        const menu = document.getElementById('menu-list');
+        menu?.classList.toggle('open');
+    };
+
     render(): React.ReactNode {
         return (
             <HeaderWrapper>
@@ -118,7 +183,12 @@ class Header extends React.Component {
                         </div>
                     </HeaderItem>
                     <HeaderItem style={{ textAlign: 'right' }}>
-                        <HeaderMenuList>
+                        <BurgerBtn onClick={this.handleBurgerClick}>
+                            <i />
+                            <i />
+                            <i />
+                        </BurgerBtn>
+                        <HeaderMenuList id="menu-list">
                             {menuList.map((i: any) => (
                                 <HeaderMenuItem key={i.id}>
                                     {i.title}
